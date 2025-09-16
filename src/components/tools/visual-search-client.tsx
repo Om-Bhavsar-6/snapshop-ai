@@ -1,7 +1,6 @@
 "use client";
 
 import { useActionState, useEffect, useRef, useState, useTransition } from "react";
-import { useFormStatus } from "react-dom";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { identifyProductAction } from "@/lib/actions";
@@ -15,26 +14,6 @@ const initialState = {
   product: null,
   errors: null,
 };
-
-function UploadButton() {
-    const { pending } = useFormStatus();
-    return (
-        <Button type="submit" className="mt-6" disabled={pending}>
-            {pending ? (
-                <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Identifying...
-                </>
-            ) : (
-                <>
-                    <Camera className="mr-2 h-4 w-4" />
-                    Upload Image
-                </>
-            )}
-        </Button>
-    )
-}
-
 
 export function VisualSearchClient() {
   const [state, formAction] = useActionState(identifyProductAction, initialState);
@@ -61,34 +40,33 @@ export function VisualSearchClient() {
     }
   }, [state, toast]);
   
-  const handleFormAction = (formData: FormData) => {
+  const handleFormSubmit = (formData: FormData) => {
     const file = formData.get('photo') as File;
-    if (file && file.size > 0) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
+    if (!file || file.size === 0) {
+        toast({
+            variant: "destructive",
+            title: "No Image Selected",
+            description: "Please select an image to upload.",
+        });
+        return;
+    }
+    const reader = new FileReader();
+    reader.onloadend = () => {
         const result = reader.result as string;
         setPreview(result);
         formData.set('photoDataUri', result);
         startTransition(() => {
             formAction(formData);
         });
-      };
-      reader.readAsDataURL(file);
-    }
+    };
+    reader.readAsDataURL(file);
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-        if (formRef.current) {
-          const formData = new FormData(formRef.current);
-          handleFormAction(formData);
-        }
-      };
-      reader.readAsDataURL(file);
+    const form = e.currentTarget.form;
+    if (form) {
+      const formData = new FormData(form);
+      handleFormSubmit(formData);
     }
   };
 
@@ -97,7 +75,7 @@ export function VisualSearchClient() {
     <div className="grid gap-8 md:grid-cols-2">
       <Card>
         <CardContent className="p-6 flex flex-col items-center justify-center h-full">
-          <form action={handleFormAction} ref={formRef}>
+          <form action={handleFormSubmit} ref={formRef}>
             <input
               type="file"
               name="photo"
@@ -135,7 +113,7 @@ export function VisualSearchClient() {
                 ) : (
                     <>
                         <Camera className="mr-2 h-4 w-4" />
-                        Upload Image
+                        {preview ? 'Change Image' : 'Upload Image'}
                     </>
                 )}
               </Button>

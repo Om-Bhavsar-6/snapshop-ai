@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect } from "react";
 import { useFormStatus } from "react-dom";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
@@ -40,18 +40,10 @@ function SubmitButton() {
 export function ImageGeneratorClient() {
   const [state, formAction] = useActionState(generateImageAction, initialState);
   const { toast } = useToast();
-  const [isLoading, setIsLoading] = useState(false);
-
-  const { pending } = useFormStatus();
-
-  useEffect(() => {
-    setIsLoading(pending);
-  }, [pending]);
+  // We can derive loading state from the form status inside the form itself.
+  // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if(state.type === 'success' || state.type === 'error'){
-        setIsLoading(false);
-    }
     if (state.type === "error" && state.errors?._server) {
       toast({
         variant: "destructive",
@@ -63,7 +55,7 @@ export function ImageGeneratorClient() {
 
   return (
     <div className="grid gap-8 md:grid-cols-2">
-      <form action={formAction} onSubmit={() => setIsLoading(true)}>
+      <form action={formAction}>
         <Card>
           <CardHeader>
             <CardTitle>Product Image Generator</CardTitle>
@@ -88,9 +80,8 @@ export function ImageGeneratorClient() {
           <CardDescription>Your AI-generated product image will appear here.</CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-center">
-            {isLoading ? (
-                <Skeleton className="w-full aspect-square rounded-lg" />
-            ) : state.type === "success" && state.imageUrl ? (
+            {/* The SubmitButton's status hook will handle the visual loading state */}
+            {state.type === "success" && state.imageUrl ? (
                 <Image
                     src={state.imageUrl}
                     alt="Generated product image"
