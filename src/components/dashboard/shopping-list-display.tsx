@@ -26,25 +26,27 @@ function parseShoppingList(listText: string): ParsedList[] {
   lines.forEach(line => {
     const trimmedLine = line.trim();
     
-    if (trimmedLine.startsWith('## ') || trimmedLine.startsWith('# ')) {
+    // Match headings like ## Category or # Category
+    const categoryMatch = trimmedLine.match(/^(#+)\s(.+)/);
+    if (categoryMatch) {
       if (currentCategory) {
         parsed.push(currentCategory);
       }
       currentCategory = {
-        category: trimmedLine.replace(/^[#\s]+/, ''),
+        category: categoryMatch[2].trim(),
         items: []
       };
     } else if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
+        // If an item appears before any category, create a default 'General' category
         if (!currentCategory) {
             currentCategory = { category: 'General', items: [] };
-            parsed.push(currentCategory);
         }
         currentCategory.items.push({
-            text: trimmedLine.substring(2),
+            text: trimmedLine.substring(2).trim(),
             checked: false
         });
-    } else if (currentCategory) {
-      // If a line doesn't start with a list marker, append it to the last item
+    } else if (currentCategory && currentCategory.items.length > 0) {
+      // This handles multi-line items. Append to the last item.
       const lastItem = currentCategory.items[currentCategory.items.length - 1];
       if(lastItem) {
         lastItem.text += ` ${trimmedLine}`;
@@ -52,9 +54,22 @@ function parseShoppingList(listText: string): ParsedList[] {
     }
   });
 
-  if (currentCategory) {
+  if (currentCategory && currentCategory.items.length > 0) {
     parsed.push(currentCategory);
   }
+  
+  // Create a default category if no categories were parsed but there was text
+  if (parsed.length === 0 && listText.trim().length > 0) {
+      const items = listText.split('\n')
+        .map(line => line.trim().replace(/^(-|\*)\s*/, ''))
+        .filter(line => line.length > 0)
+        .map(text => ({ text, checked: false }));
+
+      if (items.length > 0) {
+          parsed.push({ category: 'Shopping List', items });
+      }
+  }
+
 
   return parsed;
 }

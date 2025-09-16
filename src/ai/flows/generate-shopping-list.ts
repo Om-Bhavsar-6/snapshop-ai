@@ -25,7 +25,7 @@ export type GenerateShoppingListInput = z.infer<
 const GenerateShoppingListOutputSchema = z.object({
   shoppingList: z
     .string()
-    .describe('A categorized shopping list with necessary ingredients.'),
+    .describe('A categorized shopping list with necessary ingredients, formatted in Markdown.'),
 });
 export type GenerateShoppingListOutput = z.infer<
   typeof GenerateShoppingListOutputSchema
@@ -41,7 +41,26 @@ const prompt = ai.definePrompt({
   name: 'generateShoppingListPrompt',
   input: {schema: GenerateShoppingListInputSchema},
   output: {schema: GenerateShoppingListOutputSchema},
-  prompt: `You are a helpful shopping assistant. Generate a categorized shopping list based on the following description: {{{description}}}.  The shopping list should be categorized into sections like 'Produce', 'Dairy', 'Meat', 'Pantry', etc.
+  prompt: `You are a helpful shopping assistant. Generate a categorized shopping list based on the following description: {{{description}}}.
+
+The output should be a Markdown formatted string.
+Each category should be a heading (e.g., '## Produce').
+Each item in the list should be a bullet point (e.g., '- Apples').
+Provide specific, real-world items. For example, if the prompt is 'groceries for a week', suggest items like 'Spinach', 'Pulses', 'Groundnuts', etc.
+
+Example Output:
+## Produce
+- 1 lb Fresh Spinach
+- 2 lbs Tomatoes
+- 1 head of Garlic
+
+## Dairy
+- 1 gallon Milk
+- 1 dozen Eggs
+
+## Pantry
+- 1 bag of Lentils
+- 2 cans of Chickpeas
 
 Shopping List:`,
 });
