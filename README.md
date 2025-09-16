@@ -24,14 +24,15 @@ SnapShop AI is an intelligent web application that transforms your shopping proc
 
 🚀 Live Demo & Screenshots
 
-[Link to your live deployed application on Firebase Hosting]
 
 
 
-![Screenshot of SnapShop AI](./screenshots/screenshot-1.png)
-![Screenshot of SnapShop AI](./screenshots/screenshot-2.png)
+<img width="956" height="912" alt="Screenshot 2025-09-16 132816" src="https://github.com/user-attachments/assets/f1565766-15cb-4710-88ca-ee2bec30bfca" />
+<img width="954" height="916" alt="Screenshot 2025-09-16 132823" src="https://github.com/user-attachments/assets/9431611b-215f-4d6b-b0db-e9369e1c89da" />
 
----
+
+
+
 ✨ Key Features
 
 *   📸 Visual Product Search: See something you like? Snap a picture, and SnapShop AI will use Gemini Pro Vision to identify the item and find it online for you.
