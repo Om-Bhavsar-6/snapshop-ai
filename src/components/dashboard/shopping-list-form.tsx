@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useFormStatus } from "react-dom";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { createShoppingListAction } from "@/lib/actions";
@@ -37,7 +37,7 @@ function SubmitButton() {
 }
 
 export function ShoppingListForm() {
-  const [state, formAction] = useFormState(createShoppingListAction, initialState);
+  const [state, formAction] = useActionState(createShoppingListAction, initialState);
   const { toast } = useToast();
 
   useEffect(() => {

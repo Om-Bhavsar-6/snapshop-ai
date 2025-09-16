@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
@@ -17,7 +17,7 @@ const initialState = {
 };
 
 export function VisualSearchClient() {
-  const [state, formAction] = useFormState(identifyProductAction, initialState);
+  const [state, formAction] = useActionState(identifyProductAction, initialState);
   const [preview, setPreview] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);

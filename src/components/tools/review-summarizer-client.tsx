@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useFormStatus } from "react-dom";
 import { useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { summarizeReviewsAction } from "@/lib/actions";
@@ -37,7 +37,7 @@ function SubmitButton() {
 }
 
 export function ReviewSummarizerClient() {
-  const [state, formAction] = useFormState(summarizeReviewsAction, initialState);
+  const [state, formAction] = useActionState(summarizeReviewsAction, initialState);
   const { toast } = useToast();
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState, useFormStatus } from "react-dom";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
@@ -38,7 +38,7 @@ function SubmitButton() {
 }
 
 export function ImageGeneratorClient() {
-  const [state, formAction] = useFormState(generateImageAction, initialState);
+  const [state, formAction] = useActionState(generateImageAction, initialState);
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
 
