@@ -1,4 +1,4 @@
-Project Title: SnapShop AI
+SnapShop AI
 
 Description:
 
