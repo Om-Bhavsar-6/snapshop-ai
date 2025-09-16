@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState, useFormStatus } from "react";
-import { useEffect } from "react";
+import { useActionState, useEffect } from "react";
+import { useFormStatus } from "react-dom";
 import { useToast } from "@/hooks/use-toast";
 import { createShoppingListAction } from "@/lib/actions";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";

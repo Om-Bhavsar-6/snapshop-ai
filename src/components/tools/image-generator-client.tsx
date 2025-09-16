@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState, useFormStatus } from "react";
-import { useEffect, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
+import { useFormStatus } from "react-dom";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { generateImageAction } from "@/lib/actions";
