@@ -34,29 +34,21 @@ function parseShoppingList(listText: string): ParsedList[] {
         category: trimmedLine.replace(/^[#\s]+/, ''),
         items: []
       };
-    } else if ((trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) && currentCategory) {
-      currentCategory.items.push({
-        text: trimmedLine.substring(2),
-        checked: false
-      });
+    } else if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
+        if (!currentCategory) {
+            currentCategory = { category: 'General', items: [] };
+            parsed.push(currentCategory);
+        }
+        currentCategory.items.push({
+            text: trimmedLine.substring(2),
+            checked: false
+        });
     } else if (currentCategory) {
       // If a line doesn't start with a list marker, append it to the last item
       const lastItem = currentCategory.items[currentCategory.items.length - 1];
       if(lastItem) {
         lastItem.text += ` ${trimmedLine}`;
       }
-    } else {
-        // Handle case where list items appear before any category
-        if(parsed.length === 0) {
-            currentCategory = { category: 'General', items: [] };
-            parsed.push(currentCategory);
-        }
-        if (trimmedLine.startsWith('- ') || trimmedLine.startsWith('* ')) {
-            currentCategory.items.push({
-                text: trimmedLine.substring(2),
-                checked: false
-            });
-        }
     }
   });
 
