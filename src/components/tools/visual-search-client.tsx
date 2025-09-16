@@ -1,7 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
-import { useEffect, useRef, useState, useTransition } from "react";
+import { useActionState, useEffect, useRef, useState, useTransition } from "react";
 import { useFormStatus } from "react-dom";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
@@ -64,6 +63,7 @@ export function VisualSearchClient() {
   const [preview, setPreview] = useState<string | null>(null);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     if (state.type === "error") {
@@ -90,7 +90,9 @@ export function VisualSearchClient() {
         const result = reader.result as string;
         setPreview(result);
         formData.set('photoDataUri', result);
-        formAction(formData);
+        startTransition(() => {
+            formAction(formData);
+        });
       };
       reader.readAsDataURL(file);
     }
@@ -130,7 +132,7 @@ export function VisualSearchClient() {
       <Card>
         <CardContent className="p-6">
           <h3 className="text-lg font-semibold mb-4">Product Details</h3>
-          {state.type === 'pending' ? (
+          {isPending ? (
             <div className="space-y-4">
               <Skeleton className="h-8 w-3/4" />
               <Skeleton className="h-6 w-1/2" />
