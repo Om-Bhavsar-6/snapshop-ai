@@ -45,7 +45,7 @@ const prompt = ai.definePrompt({
 
 The output should be a Markdown formatted string.
 Each category should be a heading (e.g., '## Produce').
-Each item in the list should be a bullet point (e.g., '- Apples').
+Each item in the list should be a bullet point on a NEW LINE (e.g., '- Apples').
 Provide specific, real-world items. For example, if the prompt is 'groceries for a week', suggest items like 'Spinach', 'Pulses', 'Groundnuts', etc.
 
 Example Output:

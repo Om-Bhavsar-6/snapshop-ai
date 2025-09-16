@@ -19,7 +19,8 @@ type ParsedList = {
 function parseShoppingList(listText: string): ParsedList[] {
   if (!listText) return [];
 
-  const lines = listText.split('\n').filter(line => line.trim() !== '');
+  // Also split by common item delimiters that the AI might use incorrectly
+  const lines = listText.replace(/ - /g, '\n- ').split('\n').filter(line => line.trim() !== '');
   const parsed: ParsedList[] = [];
   let currentCategory: ParsedList | null = null;
 
