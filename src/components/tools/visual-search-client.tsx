@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import Image from "next/image";
 import { useToast } from "@/hooks/use-toast";
 import { identifyProductAction } from "@/lib/actions";
@@ -19,13 +19,14 @@ const initialState = {
 export function VisualSearchClient() {
   const [state, formAction] = useActionState(identifyProductAction, initialState);
   const [preview, setPreview] = useState<string | null>(null);
+  const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
 
   useEffect(() => {
-    setIsLoading(false);
+    setIsLoading(isPending);
     if (state.type === "error") {
       const errorMessage = state.errors?._server?.join(", ") || "An unknown error occurred.";
       toast({
@@ -34,7 +35,7 @@ export function VisualSearchClient() {
         description: errorMessage,
       });
     }
-  }, [state, toast]);
+  }, [state, toast, isPending]);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -45,9 +46,11 @@ export function VisualSearchClient() {
         const result = reader.result as string;
         setPreview(result);
 
-        const formData = new FormData();
-        formData.append('photoDataUri', result);
-        formAction(formData);
+        startTransition(() => {
+          const formData = new FormData();
+          formData.append('photoDataUri', result);
+          formAction(formData);
+        });
       };
       reader.readAsDataURL(file);
     }
@@ -88,8 +91,12 @@ export function VisualSearchClient() {
               </p>
             </div>
           )}
-          <Button onClick={handleButtonClick} className="mt-6">
-            <Camera className="mr-2 h-4 w-4" />
+          <Button onClick={handleButtonClick} className="mt-6" disabled={isLoading}>
+            {isLoading ? (
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Camera className="mr-2 h-4 w-4" />
+            )}
             {preview ? "Choose Another Image" : "Upload Image"}
           </Button>
         </CardContent>
