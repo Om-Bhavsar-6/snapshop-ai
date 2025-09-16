@@ -18,42 +18,20 @@ const initialState = {
 
 function UploadButton() {
     const { pending } = useFormStatus();
-    const fileInputRef = useRef<HTMLInputElement>(null);
-
-    const handleButtonClick = () => {
-        fileInputRef.current?.click();
-    };
-
     return (
-        <>
-            <input
-              type="file"
-              name="photo"
-              accept="image/*"
-              ref={fileInputRef}
-              className="hidden"
-              disabled={pending}
-              onChange={(e) => {
-                const form = e.currentTarget.form;
-                if (form) {
-                    form.requestSubmit();
-                }
-              }}
-            />
-            <Button onClick={handleButtonClick} className="mt-6" disabled={pending}>
-                {pending ? (
-                    <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Identifying...
-                    </>
-                ) : (
-                    <>
-                        <Camera className="mr-2 h-4 w-4" />
-                        Upload Image
-                    </>
-                )}
-            </Button>
-        </>
+        <Button type="submit" className="mt-6" disabled={pending}>
+            {pending ? (
+                <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Identifying...
+                </>
+            ) : (
+                <>
+                    <Camera className="mr-2 h-4 w-4" />
+                    Upload Image
+                </>
+            )}
+        </Button>
     )
 }
 
@@ -63,6 +41,7 @@ export function VisualSearchClient() {
   const [preview, setPreview] = useState<string | null>(null);
   const { toast } = useToast();
   const formRef = useRef<HTMLFormElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
@@ -98,11 +77,35 @@ export function VisualSearchClient() {
     }
   }
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+        if (formRef.current) {
+          const formData = new FormData(formRef.current);
+          handleFormAction(formData);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+
   return (
     <div className="grid gap-8 md:grid-cols-2">
       <Card>
         <CardContent className="p-6 flex flex-col items-center justify-center h-full">
           <form action={handleFormAction} ref={formRef}>
+            <input
+              type="file"
+              name="photo"
+              accept="image/*"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileChange}
+            />
             {preview ? (
                 <div className="relative">
                     <Image
@@ -115,15 +118,27 @@ export function VisualSearchClient() {
                 </div>
             ) : (
                 <div className="text-center p-8 border-2 border-dashed rounded-lg w-full">
-                <UploadCloud className="mx-auto h-12 w-12 text-muted-foreground" />
-                <h3 className="mt-4 text-lg font-semibold">Upload an image</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                    Take a picture of an item to identify it.
-                </p>
+                  <UploadCloud className="mx-auto h-12 w-12 text-muted-foreground" />
+                  <h3 className="mt-4 text-lg font-semibold">Upload an image</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                      Click the button to upload an item image.
+                  </p>
                 </div>
             )}
             <div className="flex justify-center">
-              <UploadButton />
+              <Button onClick={() => fileInputRef.current?.click()} className="mt-6" type="button" disabled={isPending}>
+                {isPending ? (
+                    <>
+                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                        Identifying...
+                    </>
+                ) : (
+                    <>
+                        <Camera className="mr-2 h-4 w-4" />
+                        Upload Image
+                    </>
+                )}
+              </Button>
             </div>
           </form>
         </CardContent>
