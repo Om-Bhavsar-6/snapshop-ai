@@ -20,6 +20,7 @@ import {
   MessageSquareQuote,
   Settings,
   LogOut,
+  Info,
 } from "lucide-react";
 
 const mainNav = [
@@ -105,6 +106,12 @@ export function AppSidebar() {
             <SidebarMenuButton tooltip="Settings">
               <Settings />
               <span>Settings</span>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
+            <SidebarMenuButton tooltip="About Us">
+              <Info />
+              <span>About Us</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
