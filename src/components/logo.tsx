@@ -5,7 +5,7 @@ export function Logo({ className }: { className?: string }) {
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <Image
-        src="/logo.svg"
+        src="/logo.png"
         alt="SnapShop AI Logo"
         width={24}
         height={24}
