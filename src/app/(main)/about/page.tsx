@@ -2,26 +2,25 @@ import { AppHeader } from "@/components/layout/app-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Linkedin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
 const coFounders = [
   {
-    name: "Om",
-    linkedin: "https://www.linkedin.com/in/om-example",
-    image: PlaceHolderImages.find((img) => img.id === "om-avatar"),
+    name: "Om Bhavsar",
+    linkedin: "https://www.linkedin.com/in/om-bhavsar-88899025b/",
+    image: { imageUrl: "/om.png" },
   },
   {
-    name: "Dipti",
-    linkedin: "https://www.linkedin.com/in/dipti-example",
-    image: PlaceHolderImages.find((img) => img.id === "dipti-avatar"),
+    name: "Dipti Chaturvedi",
+    linkedin: "https://www.linkedin.com/in/dipti-chaturvedi-b14a82313/",
+    image: { imageUrl: "/dipti.png" },
   },
   {
-    name: "Rohan",
-    linkedin: "https://www.linkedin.com/in/rohan-example",
-    image: PlaceHolderImages.find((img) => img.id === "rohan-avatar"),
+    name: "Rohan Shinde",
+    linkedin: "https://www.linkedin.com/in/rohan-shinde-b3092537b/",
+    image: { imageUrl: "/rohan.png" },
   },
 ];
 
