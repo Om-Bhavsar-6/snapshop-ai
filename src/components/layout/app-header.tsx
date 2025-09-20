@@ -14,6 +14,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import { Search } from "lucide-react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
+import { HeaderLogo } from "../header-logo";
 
 const userAvatar = PlaceHolderImages.find((img) => img.id === "user-avatar");
 
@@ -27,6 +28,7 @@ export function AppHeader({ pageTitle }: { pageTitle: string }) {
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input placeholder="Search..." className="pl-8 w-64" />
         </div>
+        <HeaderLogo />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="rounded-full">
