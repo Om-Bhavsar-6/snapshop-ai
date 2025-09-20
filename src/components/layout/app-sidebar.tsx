@@ -13,23 +13,21 @@ import {
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/logo";
 import {
-  Home,
-  Camera,
   List,
-  Wand2,
-  ImageIcon,
+  Camera,
   MessageSquareQuote,
+  ImageIcon,
   Settings,
   LogOut,
   Info,
-  FileText,
+  Wand2,
 } from "lucide-react";
 
 const mainNav = [
   {
     href: "/dashboard",
-    label: "Dashboard",
-    icon: Home,
+    label: "Shopping List",
+    icon: List,
   },
   {
     href: "/visual-search",
@@ -55,6 +53,8 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
+    // Make dashboard active for root path as well
+    if (href === "/dashboard") return pathname === "/dashboard" || pathname === "/";
     return pathname === href;
   };
 
@@ -83,8 +83,8 @@ export function AppSidebar() {
         <SidebarMenu className="mt-4">
           <SidebarMenuItem className="px-2">
             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
-              <FileText className="w-4 h-4" />
-              Documents
+              <Wand2 className="w-4 h-4" />
+              AI Tools
             </div>
           </SidebarMenuItem>
           {toolsNav.map((item) => (
@@ -110,7 +110,7 @@ export function AppSidebar() {
               <span>Settings</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
-          <SidebarMenuItem>
+           <SidebarMenuItem>
             <Link href="/about" passHref>
                 <SidebarMenuButton tooltip="About Us" isActive={isActive('/about')}>
                     <Info />

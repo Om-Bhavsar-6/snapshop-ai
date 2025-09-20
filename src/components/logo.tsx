@@ -7,9 +7,9 @@ export function Logo({ className }: { className?: string }) {
       <Image
         src="/logo.svg"
         alt="SnapShop AI Logo"
-        width={32}
-        height={32}
-        className="h-8 w-8"
+        width={24}
+        height={24}
+        className="h-6 w-6"
       />
       <span className="text-lg font-semibold text-foreground">
         SnapShop AI
