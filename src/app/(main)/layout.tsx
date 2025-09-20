@@ -1,4 +1,4 @@
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
+import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/layout/app-sidebar";
 
 export default function MainLayout({
@@ -9,7 +9,9 @@ export default function MainLayout({
   return (
     <SidebarProvider defaultOpen={false} open={false} sidebarWidth="20rem">
       <AppSidebar />
-      <SidebarInset>{children}</SidebarInset>
+      <main className="relative flex min-h-svh flex-1 flex-col bg-background">
+        {children}
+      </main>
     </SidebarProvider>
   );
 }
