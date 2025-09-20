@@ -21,13 +21,14 @@ import {
   LogOut,
   Info,
   Wand2,
+  Home,
 } from "lucide-react";
 
 const mainNav = [
   {
     href: "/dashboard",
-    label: "Shopping List",
-    icon: List,
+    label: "Dashboard",
+    icon: Home,
   },
   {
     href: "/visual-search",
@@ -53,16 +54,12 @@ export function AppSidebar() {
   const pathname = usePathname();
 
   const isActive = (href: string) => {
-    // Make dashboard active for root path as well
     if (href === "/dashboard") return pathname === "/dashboard" || pathname === "/";
     return pathname === href;
   };
 
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <Logo />
-      </SidebarHeader>
+    <Sidebar collapsible="icon" variant="floating">
       <SidebarContent>
         <SidebarMenu>
           {mainNav.map((item) => (
@@ -71,9 +68,12 @@ export function AppSidebar() {
                 <SidebarMenuButton
                   isActive={isActive(item.href)}
                   tooltip={item.label}
+                  className="group-data-[collapsible=icon]:justify-center"
                 >
                   <item.icon />
-                  <span>{item.label}</span>
+                  <span className="group-data-[collapsible=icon]:hidden">
+                    {item.label}
+                  </span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
@@ -81,7 +81,7 @@ export function AppSidebar() {
         </SidebarMenu>
 
         <SidebarMenu className="mt-4">
-          <SidebarMenuItem className="px-2">
+          <SidebarMenuItem className="px-2 group-data-[collapsible=icon]:hidden">
             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
               <Wand2 className="w-4 h-4" />
               AI Tools
@@ -93,9 +93,10 @@ export function AppSidebar() {
                 <SidebarMenuButton
                   isActive={isActive(item.href)}
                   tooltip={item.label}
+                   className="group-data-[collapsible=icon]:justify-center"
                 >
                   <item.icon />
-                  <span>{item.label}</span>
+                  <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
@@ -105,26 +106,23 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Settings">
+            <SidebarMenuButton tooltip="Settings"  className="group-data-[collapsible=icon]:justify-center">
               <Settings />
-              <span>Settings</span>
+              <span className="group-data-[collapsible=icon]:hidden">Settings</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
            <SidebarMenuItem>
             <Link href="/about" passHref>
-                <SidebarMenuButton tooltip="About Us" isActive={isActive('/about')}>
+                <SidebarMenuButton tooltip="About Us" isActive={isActive('/about')}  className="group-data-[collapsible=icon]:justify-center">
                     <Info />
-                    <span>About Us</span>
+                    <span className="group-data-[collapsible=icon]:hidden">About Us</span>
                 </SidebarMenuButton>
             </Link>
           </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Logout">
-              <LogOut />
-              <span>Logout</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
         </SidebarMenu>
+        <div className="mt-auto p-2 group-data-[collapsible=icon]:p-0">
+             <Logo />
+        </div>
       </SidebarFooter>
     </Sidebar>
   );
