@@ -109,10 +109,12 @@ export function AppSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="About Us">
-              <Info />
-              <span>About Us</span>
-            </SidebarMenuButton>
+            <Link href="/about" passHref>
+                <SidebarMenuButton tooltip="About Us" isActive={isActive('/about')}>
+                    <Info />
+                    <span>About Us</span>
+                </SidebarMenuButton>
+            </Link>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <SidebarMenuButton tooltip="Logout">

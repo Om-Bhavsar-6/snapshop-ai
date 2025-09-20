@@ -5,6 +5,24 @@
       "description": "User avatar",
       "imageUrl": "https://picsum.photos/seed/user-avatar/100/100",
       "imageHint": "person face"
+    },
+    {
+      "id": "creator-1-avatar",
+      "description": "Creator 1 avatar",
+      "imageUrl": "https://picsum.photos/seed/creator-1/128/128",
+      "imageHint": "person face"
+    },
+    {
+      "id": "creator-2-avatar",
+      "description": "Creator 2 avatar",
+      "imageUrl": "https://picsum.photos/seed/creator-2/128/128",
+      "imageHint": "person face"
+    },
+    {
+      "id": "creator-3-avatar",
+      "description": "Creator 3 avatar",
+      "imageUrl": "https://picsum.photos/seed/creator-3/128/128",
+      "imageHint": "person face"
     }
   ]
 }
