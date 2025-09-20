@@ -5,6 +5,24 @@
       "description": "User avatar",
       "imageUrl": "https://picsum.photos/seed/user-avatar/100/100",
       "imageHint": "person face"
+    },
+    {
+      "id": "om-avatar",
+      "description": "Om - Co-founder",
+      "imageUrl": "/om.png",
+      "imageHint": "person face"
+    },
+    {
+      "id": "dipti-avatar",
+      "description": "Dipti - Co-founder",
+      "imageUrl": "/dipti.png",
+      "imageHint": "person face"
+    },
+    {
+      "id": "rohan-avatar",
+      "description": "Rohan - Co-founder",
+      "imageUrl": "/rohan.png",
+      "imageHint": "person face"
     }
   ]
 }

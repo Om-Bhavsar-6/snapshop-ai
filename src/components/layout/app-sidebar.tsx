@@ -111,6 +111,17 @@ export function AppSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
+            <Link href="/about" passHref>
+                <SidebarMenuButton
+                  isActive={isActive("/about")}
+                  tooltip="About Us"
+                >
+                  <Info />
+                  <span>About Us</span>
+                </SidebarMenuButton>
+            </Link>
+          </SidebarMenuItem>
+          <SidebarMenuItem>
             <SidebarMenuButton tooltip="Logout">
               <LogOut />
               <span>Logout</span>
