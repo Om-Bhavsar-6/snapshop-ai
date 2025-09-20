@@ -22,7 +22,7 @@ const creators = [
   {
     name: "Rohan Shinde",
     role: "Co-Founder",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/rohan-shinde-b3092537b/",
     avatarUrl: "/rohan.jpg"
   },
 ];
