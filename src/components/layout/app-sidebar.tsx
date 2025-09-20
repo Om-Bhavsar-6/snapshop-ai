@@ -59,7 +59,10 @@ export function AppSidebar() {
   };
 
   return (
-    <Sidebar collapsible="icon" variant="floating">
+    <Sidebar>
+      <SidebarHeader>
+        <Logo />
+      </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
           {mainNav.map((item) => (
@@ -68,12 +71,9 @@ export function AppSidebar() {
                 <SidebarMenuButton
                   isActive={isActive(item.href)}
                   tooltip={item.label}
-                  className="group-data-[collapsible=icon]:justify-center"
                 >
                   <item.icon />
-                  <span className="group-data-[collapsible=icon]:hidden">
-                    {item.label}
-                  </span>
+                  <span>{item.label}</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
@@ -81,7 +81,7 @@ export function AppSidebar() {
         </SidebarMenu>
 
         <SidebarMenu className="mt-4">
-          <SidebarMenuItem className="px-2 group-data-[collapsible=icon]:hidden">
+          <SidebarMenuItem className="px-2">
             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
               <Wand2 className="w-4 h-4" />
               AI Tools
@@ -93,10 +93,9 @@ export function AppSidebar() {
                 <SidebarMenuButton
                   isActive={isActive(item.href)}
                   tooltip={item.label}
-                   className="group-data-[collapsible=icon]:justify-center"
                 >
                   <item.icon />
-                  <span className="group-data-[collapsible=icon]:hidden">{item.label}</span>
+                  <span>{item.label}</span>
                 </SidebarMenuButton>
               </Link>
             </SidebarMenuItem>
@@ -106,23 +105,18 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Settings"  className="group-data-[collapsible=icon]:justify-center">
+            <SidebarMenuButton tooltip="Settings">
               <Settings />
-              <span className="group-data-[collapsible=icon]:hidden">Settings</span>
+              <span>Settings</span>
             </SidebarMenuButton>
           </SidebarMenuItem>
-           <SidebarMenuItem>
-            <Link href="/about" passHref>
-                <SidebarMenuButton tooltip="About Us" isActive={isActive('/about')}  className="group-data-[collapsible=icon]:justify-center">
-                    <Info />
-                    <span className="group-data-[collapsible=icon]:hidden">About Us</span>
-                </SidebarMenuButton>
-            </Link>
+          <SidebarMenuItem>
+            <SidebarMenuButton tooltip="Logout">
+              <LogOut />
+              <span>Logout</span>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
-        <div className="mt-auto p-2 group-data-[collapsible=icon]:p-0">
-             <Logo />
-        </div>
       </SidebarFooter>
     </Sidebar>
   );

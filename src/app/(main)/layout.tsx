@@ -7,7 +7,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <SidebarProvider defaultOpen={false} open={false} sidebarWidth="20rem">
+    <SidebarProvider defaultOpen={true} open={true} sidebarWidth="16rem">
       <AppSidebar />
       <main className="relative flex min-h-svh flex-1 flex-col bg-background">
         {children}
