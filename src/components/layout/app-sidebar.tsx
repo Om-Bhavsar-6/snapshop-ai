@@ -13,21 +13,23 @@ import {
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/logo";
 import {
+  Home,
   Camera,
   List,
   Wand2,
-  Image as ImageIcon,
+  ImageIcon,
   MessageSquareQuote,
   Settings,
   LogOut,
   Info,
+  FileText,
 } from "lucide-react";
 
 const mainNav = [
   {
     href: "/dashboard",
-    label: "Shopping List",
-    icon: List,
+    label: "Dashboard",
+    icon: Home,
   },
   {
     href: "/visual-search",
@@ -81,8 +83,8 @@ export function AppSidebar() {
         <SidebarMenu className="mt-4">
           <SidebarMenuItem className="px-2">
             <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-2">
-              <Wand2 className="w-4 h-4" />
-              AI Tools
+              <FileText className="w-4 h-4" />
+              Documents
             </div>
           </SidebarMenuItem>
           {toolsNav.map((item) => (
