@@ -13,7 +13,7 @@ const coFounders = [
     image: { imageUrl: "/om.jpg" },
   },
   {
-    name: "Dipti Chaturvedi",
+    name: "Samay Duge",
     linkedin: "https://www.linkedin.com/in/dipti-chaturvedi-b14a82313/",
     image: { imageUrl: "/dipti.jpg" },
   },
