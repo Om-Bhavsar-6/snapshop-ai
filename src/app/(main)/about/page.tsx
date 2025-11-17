@@ -6,7 +6,7 @@ import { Linkedin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 
-const TeamMembers = [
+const coFounders = [
   {
     name: "Om Bhavsar",
     linkedin: "https://www.linkedin.com/in/om-bhavsar-88899025b/",
