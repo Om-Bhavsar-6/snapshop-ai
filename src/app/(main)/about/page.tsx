@@ -22,6 +22,11 @@ const coFounders = [
     linkedin: "https://www.linkedin.com/in/rohan-shinde-b3092537b/",
     image: { imageUrl: "/rohan.jpg" },
   },
+  {
+    name: "Swet Tiwari",
+    linkedin: "#",
+    image: { imageUrl: "/swet.jpg" },
+  },
 ];
 
 export default function AboutUsPage() {
@@ -36,7 +41,7 @@ export default function AboutUsPage() {
               The innovative minds behind SnapShop AI.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {coFounders.map((founder) => (
               <Card key={founder.name} className="text-center">
                 <CardContent className="p-6">
