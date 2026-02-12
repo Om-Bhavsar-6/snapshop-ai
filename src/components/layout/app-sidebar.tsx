@@ -13,12 +13,10 @@ import {
 } from "@/components/ui/sidebar";
 import { Logo } from "@/components/logo";
 import {
-  List,
   Camera,
   MessageSquareQuote,
   ImageIcon,
   Settings,
-  LogOut,
   Info,
   Wand2,
   Home,
@@ -67,15 +65,16 @@ export function AppSidebar() {
         <SidebarMenu>
           {mainNav.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <Link href={item.href} asChild>
-                <SidebarMenuButton
-                  isActive={isActive(item.href)}
-                  tooltip={item.label}
-                >
+              <SidebarMenuButton
+                asChild
+                isActive={isActive(item.href)}
+                tooltip={item.label}
+              >
+                <Link href={item.href}>
                   <item.icon />
                   <span>{item.label}</span>
-                </SidebarMenuButton>
-              </Link>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
@@ -89,15 +88,16 @@ export function AppSidebar() {
           </SidebarMenuItem>
           {toolsNav.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <Link href={item.href} asChild>
-                <SidebarMenuButton
-                  isActive={isActive(item.href)}
-                  tooltip={item.label}
-                >
+              <SidebarMenuButton
+                asChild
+                isActive={isActive(item.href)}
+                tooltip={item.label}
+              >
+                <Link href={item.href}>
                   <item.icon />
                   <span>{item.label}</span>
-                </SidebarMenuButton>
-              </Link>
+                </Link>
+              </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
@@ -105,31 +105,27 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/settings" asChild>
-              <SidebarMenuButton
-                isActive={isActive("/settings")}
-                tooltip="Settings"
-              >
+            <SidebarMenuButton
+              asChild
+              isActive={isActive("/settings")}
+              tooltip="Settings"
+            >
+              <Link href="/settings">
                 <Settings />
                 <span>Settings</span>
-              </SidebarMenuButton>
-            </Link>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/about" asChild>
-                <SidebarMenuButton
-                  isActive={isActive("/about")}
-                  tooltip="About Us"
-                >
-                  <Info />
-                  <span>About Us</span>
-                </SidebarMenuButton>
-            </Link>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Logout">
-              <LogOut />
-              <span>Logout</span>
+            <SidebarMenuButton
+              asChild
+              isActive={isActive("/about")}
+              tooltip="About Us"
+            >
+              <Link href="/about">
+                <Info />
+                <span>About Us</span>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
