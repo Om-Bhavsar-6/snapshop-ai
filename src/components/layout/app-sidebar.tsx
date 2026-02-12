@@ -55,6 +55,7 @@ export function AppSidebar() {
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard" || pathname === "/";
+    if (href === "/settings") return pathname === "/settings";
     return pathname === href;
   };
 
@@ -105,10 +106,15 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton tooltip="Settings">
-              <Settings />
-              <span>Settings</span>
-            </SidebarMenuButton>
+            <Link href="/settings" passHref>
+              <SidebarMenuButton
+                isActive={isActive("/settings")}
+                tooltip="Settings"
+              >
+                <Settings />
+                <span>Settings</span>
+              </SidebarMenuButton>
+            </Link>
           </SidebarMenuItem>
           <SidebarMenuItem>
             <Link href="/about" passHref>
