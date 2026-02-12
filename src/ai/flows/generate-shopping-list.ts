@@ -24,8 +24,25 @@ export type GenerateShoppingListInput = z.infer<
 
 const GenerateShoppingListOutputSchema = z.object({
   shoppingList: z
-    .string()
-    .describe('A categorized shopping list with necessary ingredients, formatted in Markdown.'),
+    .array(
+      z.object({
+        category: z.string().describe('The category of the shopping list items.'),
+        items: z
+          .array(
+            z.object({
+              name: z.string().describe('The name of the shopping list item.'),
+              link: z
+                .string()
+                .url()
+                .describe(
+                  'A URL to an e-commerce page for the item. Use a search query link if a direct product is not found.'
+                ),
+            })
+          )
+          .describe('An array of items in this category.'),
+      })
+    )
+    .describe('A categorized shopping list with items and purchase links.'),
 });
 export type GenerateShoppingListOutput = z.infer<
   typeof GenerateShoppingListOutputSchema
@@ -41,28 +58,15 @@ const prompt = ai.definePrompt({
   name: 'generateShoppingListPrompt',
   input: {schema: GenerateShoppingListInputSchema},
   output: {schema: GenerateShoppingListOutputSchema},
-  prompt: `You are a helpful shopping assistant. Generate a categorized shopping list based on the following description: {{{description}}}.
+  prompt: `You are a helpful shopping assistant. Your task is to generate a categorized shopping list based on the user's description. For each item in the list, you must also provide a plausible search link to a major e-commerce website (like Amazon, Walmart, or a general Google Shopping search) where the user could find and purchase that item.
 
-The output should be a Markdown formatted string.
-Each category should be a heading (e.g., '## Produce').
-Each item in the list should be a bullet point on a NEW LINE (e.g., '- Apples').
-Provide specific, real-world items. For example, if the prompt is 'groceries for a week', suggest items like 'Spinach', 'Pulses', 'Groundnuts', etc.
+User's Description: {{{description}}}
 
-Example Output:
-## Produce
-- 1 lb Fresh Spinach
-- 2 lbs Tomatoes
-- 1 head of Garlic
+Generate a JSON object that adheres to the output schema. The output must be a JSON array of categories. Each category object should have a "category" name and a list of "items". Each item object must have a "name" and a "link".
 
-## Dairy
-- 1 gallon Milk
-- 1 dozen Eggs
+For the 'link', if you can't find a specific product, create a search query URL. For example, for "1 lb Fresh Spinach", the link could be "https://www.google.com/search?tbm=shop&q=1+lb+fresh+spinach".
 
-## Pantry
-- 1 bag of Lentils
-- 2 cans of Chickpeas
-
-Shopping List:`,
+Provide only the JSON output.`,
 });
 
 const generateShoppingListFlow = ai.defineFlow(

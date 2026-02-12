@@ -56,14 +56,20 @@ export function ShoppingListForm() {
   }, [state, toast]);
 
   const handleDownloadTxt = () => {
-    if (!state.shoppingList) return;
-    const blob = new Blob([state.shoppingList.replace(/##/g, '').replace(/\* /g, '  - ')], { type: 'text/plain' });
+    if (!state.shoppingList || !Array.isArray(state.shoppingList)) return;
+
+    const textContent = (state.shoppingList as { category: string; items: { name: string }[] }[]).map(category => {
+        const items = category.items.map(item => `  - ${item.name}`).join('\n');
+        return `## ${category.category}\n${items}`;
+    }).join('\n\n');
+
+    const blob = new Blob([textContent], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-a.href = url;
-a.download = 'shopping-list.txt';
+    a.href = url;
+    a.download = 'shopping-list.txt';
     document.body.appendChild(a);
-a.click();
+    a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
   };
@@ -138,7 +144,7 @@ a.click();
         </Card>
       </form>
       
-      {state.type === "success" && state.shoppingList && (
+      {state.type === "success" && state.shoppingList && Array.isArray(state.shoppingList) && (
         <div >
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-bold">Your Generated List</h2>
