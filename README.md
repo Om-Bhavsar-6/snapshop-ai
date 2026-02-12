@@ -2,7 +2,7 @@
 
 Your personal, AI-powered shopping companion designed to make shopping simple, smart, and fast.
 
-[![Built with Firebase](https://img.shields.io/badge/Built_with-Firebase-orange.svg)](https://firebase.google.com/)
+
 [![Powered by Google Gemini](https://img.shields.io/badge/Powered_by-Google_Gemini-blue.svg)](https://ai.google/gemini/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -48,20 +48,20 @@ SnapShop AI is an intelligent web application that transforms your shopping proc
 
 🛠️ Tech Stack & Architecture
 
-This project is a showcase of building a modern, scalable AI application using the Google Cloud and Firebase ecosystem.
+This project is a showcase of building a modern, scalable AI application using the Google Cloud and Gemini ecosystem.
 
 Frontend: React / Next.js
 *   Backend & Database:
     *   Google Firebase: The core backend platform.
-        *   Firebase Hosting: For global, fast, and secure web hosting.
-        *   Firebase Authentication: Secure user sign-up and login.
-        *   Firestore: NoSQL database for storing user data and shopping lists.
+        *   Vercel Hosting: For global, fast, and secure web hosting.
+        *   History Management: Secure user history and response.
+        *   Google Database : NoSQL database for storing user data and shopping lists.
 *   AI & Machine Learning:
-    *   Firebase AI Logic: To easily integrate and manage generative AI models.
+    
     *   Google Gemini API (via Vertex AI): The brain of the application, handling all natural language and vision tasks.
 *   Development Environment:
-    *   Firebase Studio: Cloud-based IDE used for rapid, AI-assisted development.
+    *  Vs Code Github Copilot-IntelliJ: Cloud-based IDE used for rapid, AI-assisted development.
 
  System Architecture
-The application uses a serverless architecture where the frontend (hosted on Firebase Hosting) communicates directly with Firebase services. The AI logic is handled through Firebase AI Logic, which securely calls the Gemini API.
+The application uses a serverless architecture where the frontend (hosted Vercel Hosting) communicates directly with services. The AI logic is handled through Gemini AI Logic, which securely calls the Gemini API.
 
