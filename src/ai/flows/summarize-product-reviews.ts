@@ -34,7 +34,11 @@ const prompt = ai.definePrompt({
   output: {schema: PolishReviewOutputSchema},
   prompt: `You are an expert editor. Your task is to take a single customer review for a product and improve it. Paraphrase the review, correct any grammatical errors, fix spelling mistakes, and improve the overall phrasing to make it sound more articulate and helpful for other shoppers.
 
-Preserve the original sentiment and key points of the review. The goal is to polish the user's raw feedback into a well-written review.
+Crucially, the polished review must be written from a first-person perspective, using pronouns like "I" and "my". It should sound like a genuine customer is writing about their experience.
+
+Also, make sure to naturally incorporate the product's name, "{{{productName}}}", into the review.
+
+Preserve the original sentiment and key points of the review. The goal is to polish the user's raw feedback into a well-written, first-person review.
 
 Product Name: "{{{productName}}}"
 Original Review: "{{{review}}}"
