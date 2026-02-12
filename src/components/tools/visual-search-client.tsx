@@ -151,15 +151,13 @@ export function VisualSearchClient() {
                     <TableHeader>
                         <TableRow>
                         <TableHead>Platform</TableHead>
-                        <TableHead>Price</TableHead>
-                        <TableHead className="text-right">Link</TableHead>
+                        <TableHead className="text-right">Search Link</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {state.product.purchasingOptions?.map((option: any, index: number) => (
                             <TableRow key={index}>
                                 <TableCell className="font-medium">{option.platform}</TableCell>
-                                <TableCell>{option.price}</TableCell>
                                 <TableCell className="text-right">
                                 <a href={option.link} target="_blank" rel="noopener noreferrer">
                                     <Button variant="ghost" size="icon">
