@@ -40,7 +40,7 @@ const mainNav = [
 const toolsNav = [
   {
     href: "/tools/review-summarizer",
-    label: "Review Summarizer",
+    label: "Review Polisher",
     icon: MessageSquareQuote,
   },
   {

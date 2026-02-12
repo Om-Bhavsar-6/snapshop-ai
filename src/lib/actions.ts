@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { generateShoppingList } from "@/ai/flows/generate-shopping-list";
-import { summarizeProductReviews } from "@/ai/flows/summarize-product-reviews";
+import { polishReview } from "@/ai/flows/summarize-product-reviews";
 import { generateProductImage } from "@/ai/flows/generate-product-image";
 import { identifyProductFromImage } from "@/ai/flows/identify-product-from-image";
 import { revalidatePath } from "next/cache";
@@ -37,33 +37,33 @@ export async function createShoppingListAction(prevState: any, formData: FormDat
   }
 }
 
-// Summarize Product Reviews Action
-const reviewSummarySchema = z.object({
+// Polish Product Review Action
+const polishReviewSchema = z.object({
   productName: z.string().min(3, "Product name must be at least 3 characters."),
-  reviews: z.string().min(20, "Please provide more review text."),
+  review: z.string().min(5, "Please provide a review to polish."),
 });
 
-export async function summarizeReviewsAction(prevState: any, formData: FormData) {
-    const validatedFields = reviewSummarySchema.safeParse({
+export async function polishReviewAction(prevState: any, formData: FormData) {
+    const validatedFields = polishReviewSchema.safeParse({
         productName: formData.get('productName'),
-        reviews: formData.get('reviews'),
+        review: formData.get('review'),
     });
 
     if (!validatedFields.success) {
         return {
             type: "error" as const,
             errors: validatedFields.error.flatten().fieldErrors,
-            summary: null,
+            polishedReview: null,
         };
     }
 
     try {
-        const { summary } = await summarizeProductReviews(validatedFields.data);
+        const { polishedReview } = await polishReview(validatedFields.data);
         revalidatePath("/tools/review-summarizer");
-        return { type: "success" as const, summary, errors: null };
+        return { type: "success" as const, polishedReview, errors: null };
     } catch (e) {
         const error = e instanceof Error ? e.message : "An unknown error occurred.";
-        return { type: "error" as const, errors: { _server: [error] }, summary: null };
+        return { type: "error" as const, errors: { _server: [error] }, polishedReview: null };
     }
 }
 

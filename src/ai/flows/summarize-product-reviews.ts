@@ -1,45 +1,52 @@
 'use server';
 
 /**
- * @fileOverview Summarizes customer reviews for a given product.
+ * @fileOverview Polishes a single customer review to be more articulate and grammatically correct.
  *
- * - summarizeProductReviews - A function that summarizes customer reviews.
- * - SummarizeProductReviewsInput - The input type for the summarizeProductReviews function.
- * - SummarizeProductReviewsOutput - The return type for the summarizeProductReviews function.
+ * - polishReview - A function that takes a raw customer review and returns a polished version.
+ * - PolishReviewInput - The input type for the polishReview function.
+ * - PolishReviewOutput - The return type for the polishReview function.
  */
 
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
-const SummarizeProductReviewsInputSchema = z.object({
-  productName: z.string().describe('The name of the product to summarize reviews for.'),
-  reviews: z.string().describe('A string containing customer reviews for the product.'),
+const PolishReviewInputSchema = z.object({
+  productName: z.string().describe('The name of the product the review is for.'),
+  review: z.string().describe('A single customer review, which may be short or grammatically incorrect.'),
 });
-export type SummarizeProductReviewsInput = z.infer<typeof SummarizeProductReviewsInputSchema>;
+export type PolishReviewInput = z.infer<typeof PolishReviewInputSchema>;
 
-const SummarizeProductReviewsOutputSchema = z.object({
-  summary: z.string().describe('A concise summary of the customer reviews.'),
+const PolishReviewOutputSchema = z.object({
+  polishedReview: z.string().describe('The polished, well-written version of the customer review.'),
 });
-export type SummarizeProductReviewsOutput = z.infer<typeof SummarizeProductReviewsOutputSchema>;
+export type PolishReviewOutput = z.infer<typeof PolishReviewOutputSchema>;
 
-export async function summarizeProductReviews(
-  input: SummarizeProductReviewsInput
-): Promise<SummarizeProductReviewsOutput> {
-  return summarizeProductReviewsFlow(input);
+export async function polishReview(
+  input: PolishReviewInput
+): Promise<PolishReviewOutput> {
+  return polishReviewFlow(input);
 }
 
 const prompt = ai.definePrompt({
-  name: 'summarizeProductReviewsPrompt',
-  input: {schema: SummarizeProductReviewsInputSchema},
-  output: {schema: SummarizeProductReviewsOutputSchema},
-  prompt: `Summarize the following customer reviews for the product "{{{productName}}}".\n\nReviews:\n{{{reviews}}}`,
+  name: 'polishReviewPrompt',
+  input: {schema: PolishReviewInputSchema},
+  output: {schema: PolishReviewOutputSchema},
+  prompt: `You are an expert editor. Your task is to take a single customer review for a product and improve it. Paraphrase the review, correct any grammatical errors, fix spelling mistakes, and improve the overall phrasing to make it sound more articulate and helpful for other shoppers.
+
+Preserve the original sentiment and key points of the review. The goal is to polish the user's raw feedback into a well-written review.
+
+Product Name: "{{{productName}}}"
+Original Review: "{{{review}}}"
+
+Provide only the polished review in the JSON output.`,
 });
 
-const summarizeProductReviewsFlow = ai.defineFlow(
+const polishReviewFlow = ai.defineFlow(
   {
-    name: 'summarizeProductReviewsFlow',
-    inputSchema: SummarizeProductReviewsInputSchema,
-    outputSchema: SummarizeProductReviewsOutputSchema,
+    name: 'polishReviewFlow',
+    inputSchema: PolishReviewInputSchema,
+    outputSchema: PolishReviewOutputSchema,
   },
   async input => {
     const {output} = await prompt(input);

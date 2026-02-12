@@ -4,7 +4,7 @@ import { ReviewSummarizerClient } from "@/components/tools/review-summarizer-cli
 export default function ReviewSummarizerPage() {
   return (
     <>
-      <AppHeader pageTitle="Review Summarizer" />
+      <AppHeader pageTitle="Review Polisher" />
       <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto">
         <ReviewSummarizerClient />
       </main>
