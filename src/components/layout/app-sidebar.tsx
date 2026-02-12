@@ -55,7 +55,6 @@ export function AppSidebar() {
 
   const isActive = (href: string) => {
     if (href === "/dashboard") return pathname === "/dashboard" || pathname === "/";
-    if (href === "/settings") return pathname === "/settings";
     return pathname === href;
   };
 
@@ -68,7 +67,7 @@ export function AppSidebar() {
         <SidebarMenu>
           {mainNav.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <Link href={item.href} passHref>
+              <Link href={item.href} asChild>
                 <SidebarMenuButton
                   isActive={isActive(item.href)}
                   tooltip={item.label}
@@ -90,7 +89,7 @@ export function AppSidebar() {
           </SidebarMenuItem>
           {toolsNav.map((item) => (
             <SidebarMenuItem key={item.href}>
-              <Link href={item.href} passHref>
+              <Link href={item.href} asChild>
                 <SidebarMenuButton
                   isActive={isActive(item.href)}
                   tooltip={item.label}
@@ -106,7 +105,7 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/settings" passHref>
+            <Link href="/settings" asChild>
               <SidebarMenuButton
                 isActive={isActive("/settings")}
                 tooltip="Settings"
@@ -117,7 +116,7 @@ export function AppSidebar() {
             </Link>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/about" passHref>
+            <Link href="/about" asChild>
                 <SidebarMenuButton
                   isActive={isActive("/about")}
                   tooltip="About Us"
