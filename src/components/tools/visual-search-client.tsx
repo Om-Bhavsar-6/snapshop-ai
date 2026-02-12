@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Camera, Loader2, UploadCloud, Link as LinkIcon, Star } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const initialState = {
   type: null,
@@ -129,28 +130,50 @@ export function VisualSearchClient() {
             <div className="space-y-4">
               <Skeleton className="h-8 w-3/4" />
               <Skeleton className="h-6 w-1/2" />
-              <Skeleton className="h-6 w-1/4" />
+              <div className="border rounded-md">
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full border-t" />
+                <Skeleton className="h-12 w-full border-t" />
+              </div>
             </div>
           ) : state.type === "success" && state.product ? (
-            <div className="space-y-3">
-              <h4 className="text-2xl font-bold text-primary">{state.product.productName}</h4>
-              <div className="flex items-center gap-2 text-muted-foreground">
-                <Star className="h-5 w-5 text-yellow-500 fill-yellow-400" />
-                <span className="font-semibold">
-                  Confidence: {Math.round(state.product.confidence * 100)}%
-                </span>
-              </div>
-              <a
-                href={state.product.productLink}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-block"
-              >
-                <Button variant="outline">
-                  <LinkIcon className="mr-2 h-4 w-4" />
-                  View Product Online
-                </Button>
-              </a>
+            <div className="space-y-4">
+                <div>
+                    <h4 className="text-2xl font-bold text-primary">{state.product.productName}</h4>
+                    <div className="flex items-center gap-2 text-muted-foreground mt-1">
+                        <Star className="h-5 w-5 text-yellow-500 fill-yellow-400" />
+                        <span className="font-semibold">
+                        Confidence: {Math.round(state.product.confidence * 100)}%
+                        </span>
+                    </div>
+                </div>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                        <TableHead>Platform</TableHead>
+                        <TableHead>Price</TableHead>
+                        <TableHead className="text-right">Link</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {state.product.purchasingOptions?.map((option: any, index: number) => (
+                            <TableRow key={index}>
+                                <TableCell className="font-medium">{option.platform}</TableCell>
+                                <TableCell>{option.price}</TableCell>
+                                <TableCell className="text-right">
+                                <a href={option.link} target="_blank" rel="noopener noreferrer">
+                                    <Button variant="ghost" size="icon">
+                                    <LinkIcon className="h-4 w-4" />
+                                    </Button>
+                                </a>
+                                </TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+                {(!state.product.purchasingOptions || state.product.purchasingOptions.length === 0) && (
+                    <p className="text-muted-foreground text-sm">No purchasing options found.</p>
+                )}
             </div>
           ) : (
             <div className="flex items-center justify-center h-full text-muted-foreground">
