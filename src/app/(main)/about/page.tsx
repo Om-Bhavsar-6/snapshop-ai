@@ -39,14 +39,14 @@ export default function AboutUsPage() {
     <div className="flex flex-col h-full">
       <AppHeader pageTitle="About Us" />
       <main className="flex-1 p-4 md:p-6 lg:p-8 overflow-auto">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold tracking-tight text-primary">Meet Our Team</h1>
             <p className="mt-4 text-lg text-muted-foreground">
               The innovative minds behind SnapShop AI.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
             {coFounders.map((founder) => (
               <Card key={founder.name} className="text-center">
                 <CardContent className="p-6">
