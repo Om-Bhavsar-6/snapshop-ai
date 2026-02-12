@@ -47,6 +47,15 @@ export function ReviewSummarizerClient() {
         title: "Error",
         description: state.errors._server.join(", "),
       });
+    } else if (state.type === 'success' && (state as any).query) {
+      try {
+        const newHistoryItem = { type: 'Review Polish', query: (state as any).query, timestamp: Date.now() };
+        const history = JSON.parse(localStorage.getItem('snapshop-history') || '[]');
+        history.unshift(newHistoryItem);
+        localStorage.setItem('snapshop-history', JSON.stringify(history.slice(0, 50)));
+      } catch (e) {
+        console.error("Failed to save history:", e);
+      }
     }
   }, [state, toast]);
 

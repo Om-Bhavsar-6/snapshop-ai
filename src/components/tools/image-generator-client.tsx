@@ -40,8 +40,6 @@ function SubmitButton() {
 export function ImageGeneratorClient() {
   const [state, formAction] = useActionState(generateImageAction, initialState);
   const { toast } = useToast();
-  // We can derive loading state from the form status inside the form itself.
-  // const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (state.type === "error" && state.errors?._server) {
@@ -50,6 +48,15 @@ export function ImageGeneratorClient() {
         title: "Error",
         description: state.errors._server.join(", "),
       });
+    } else if (state.type === 'success' && (state as any).query) {
+      try {
+        const newHistoryItem = { type: 'Image Generation', query: (state as any).query, timestamp: Date.now() };
+        const history = JSON.parse(localStorage.getItem('snapshop-history') || '[]');
+        history.unshift(newHistoryItem);
+        localStorage.setItem('snapshop-history', JSON.stringify(history.slice(0, 50)));
+      } catch (e) {
+        console.error("Failed to save history:", e);
+      }
     }
   }, [state, toast]);
 
@@ -80,7 +87,6 @@ export function ImageGeneratorClient() {
           <CardDescription>Your AI-generated product image will appear here.</CardDescription>
         </CardHeader>
         <CardContent className="flex items-center justify-center">
-            {/* The SubmitButton's status hook will handle the visual loading state */}
             {state.type === "success" && state.imageUrl ? (
                 <Image
                     src={state.imageUrl}

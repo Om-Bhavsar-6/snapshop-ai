@@ -30,7 +30,7 @@ export async function createShoppingListAction(prevState: any, formData: FormDat
       description: validatedFields.data.description,
     });
     revalidatePath("/dashboard");
-    return { type: "success" as const, shoppingList, errors: null };
+    return { type: "success" as const, shoppingList, errors: null, query: validatedFields.data.description };
   } catch (e) {
     const error = e instanceof Error ? e.message : "An unknown error occurred.";
     return { type: "error" as const, errors: { _server: [error] }, shoppingList: null };
@@ -60,7 +60,7 @@ export async function polishReviewAction(prevState: any, formData: FormData) {
     try {
         const { polishedReview } = await polishReview(validatedFields.data);
         revalidatePath("/tools/review-summarizer");
-        return { type: "success" as const, polishedReview, errors: null };
+        return { type: "success" as const, polishedReview, errors: null, query: validatedFields.data };
     } catch (e) {
         const error = e instanceof Error ? e.message : "An unknown error occurred.";
         return { type: "error" as const, errors: { _server: [error] }, polishedReview: null };
@@ -88,7 +88,7 @@ export async function generateImageAction(prevState: any, formData: FormData) {
     try {
         const { imageUrl } = await generateProductImage(validatedFields.data);
         revalidatePath("/tools/image-generator");
-        return { type: "success" as const, imageUrl, errors: null };
+        return { type: "success" as const, imageUrl, errors: null, query: validatedFields.data.productName };
     } catch (e) {
         const error = e instanceof Error ? e.message : "An unknown error occurred.";
         return { type: "error" as const, errors: { _server: [error] }, imageUrl: null };
@@ -116,7 +116,7 @@ export async function identifyProductAction(prevState: any, formData: FormData) 
     try {
         const product = await identifyProductFromImage(validatedFields.data);
         revalidatePath("/visual-search");
-        return { type: "success" as const, product, errors: null };
+        return { type: "success" as const, product, errors: null, query: validatedFields.data.photoDataUri };
     } catch (e) {
         const error = e instanceof Error ? e.message : "An unknown error occurred.";
         return { type: "error" as const, errors: { _server: [error] }, product: null };

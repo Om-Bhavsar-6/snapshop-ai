@@ -52,14 +52,24 @@ export function ShoppingListForm() {
         title: "Error",
         description: state.errors._server.join(", "),
       });
+    } else if (state.type === 'success' && (state as any).query) {
+      try {
+        const newHistoryItem = { type: 'Shopping List', query: (state as any).query, timestamp: Date.now() };
+        const history = JSON.parse(localStorage.getItem('snapshop-history') || '[]');
+        history.unshift(newHistoryItem);
+        // Limit history to 50 items
+        localStorage.setItem('snapshop-history', JSON.stringify(history.slice(0, 50)));
+      } catch (e) {
+        console.error("Failed to save history:", e);
+      }
     }
   }, [state, toast]);
 
   const handleDownloadTxt = () => {
     if (!state.shoppingList || !Array.isArray(state.shoppingList)) return;
 
-    const textContent = (state.shoppingList as { category: string; items: { name: string }[] }[]).map(category => {
-        const items = category.items.map(item => `  - ${item.name}`).join('\n');
+    const textContent = (state.shoppingList as { category: string; items: { name: string, link: string }[] }[]).map(category => {
+        const items = category.items.map(item => `  - ${item.name} (${item.link})`).join('\n');
         return `## ${category.category}\n${items}`;
     }).join('\n\n');
 

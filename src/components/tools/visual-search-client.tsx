@@ -34,10 +34,22 @@ export function VisualSearchClient() {
       });
     }
     if (state.type === 'success'){
-      // Clear the file input
-        if(formRef.current) {
-            formRef.current.reset();
+      if ((state as any).query) {
+        try {
+          const newHistoryItem = { type: 'Visual Search', query: (state as any).query, timestamp: Date.now() };
+          const history = JSON.parse(localStorage.getItem('snapshop-history') || '[]');
+          history.unshift(newHistoryItem);
+          localStorage.setItem('snapshop-history', JSON.stringify(history.slice(0, 50)));
+        } catch (e) {
+          console.error("Failed to save history:", e);
         }
+      }
+      
+      // Clear the file input and preview
+      if(formRef.current) {
+          formRef.current.reset();
+      }
+      setPreview(null);
     }
   }, [state, toast]);
   
