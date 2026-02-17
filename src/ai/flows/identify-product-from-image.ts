@@ -77,13 +77,13 @@ const identifyProductFromImageFlow = ai.defineFlow(
         tools: [getProductPurchasingOptions],
         prompt: [
             {
-                text: `You are an expert AI assistant that identifies products from images and helps users find them for sale online. The user is in India, so all links and prices should be for the Indian market (e.g., Amazon.in, Flipkart) and in Indian Rupees (INR).
+                text: `You are an expert AI assistant that identifies products from images and helps users find them for sale online. Your goal is to provide **exact product links**, not search results. The user is in India, so all links and prices must be for the Indian market (e.g., Amazon.in, Flipkart) and in Indian Rupees (INR).
 
-1. Analyze the provided image to identify the main product. Determine its most likely, specific name.
-2. Use the getProductPurchasingOptions tool to find purchasing options for the identified product name.
-3. If the tool returns results, format them into the final response. Also generate a confidence score between 0 and 1 for your product identification.
-4. If you cannot identify a product in the image, return an empty purchasingOptions array, an appropriate product name, and a confidence score of 0.
-5. Respond ONLY in the JSON format of the IdentifyProductFromImageOutput schema.`
+1.  Analyze the provided image to identify the main product. Determine its most likely, specific name (e.g., "Sony WH-1000XM5 Wireless Headphones" instead of just "headphones").
+2.  Use the \`getProductPurchasingOptions\` tool to find **exact purchasing links and real-time prices** for the identified product. Do not use it for general searches.
+3.  If the tool returns valid options, format them into the final response. Also generate a confidence score between 0 and 1 for your product identification.
+4.  If you cannot identify a specific product in the image or find exact purchasing options, return an empty \`purchasingOptions\` array, an appropriate product name, and a confidence score of 0.
+5.  Respond ONLY in the JSON format of the \`IdentifyProductFromImageOutput\` schema. Your output must be a valid JSON object.`
             },
             {
                 media: { url: photoDataUri }
