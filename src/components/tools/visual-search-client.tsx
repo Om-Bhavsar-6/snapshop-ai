@@ -142,11 +142,32 @@ export function VisualSearchClient() {
             <div className="space-y-4">
               <Skeleton className="h-8 w-3/4" />
               <Skeleton className="h-6 w-1/2" />
-              <div className="border rounded-md">
-                <Skeleton className="h-12 w-full" />
-                <Skeleton className="h-12 w-full border-t" />
-                <Skeleton className="h-12 w-full border-t" />
-              </div>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Platform</TableHead>
+                    <TableHead>Price</TableHead>
+                    <TableHead className="text-right">Link</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  <TableRow>
+                    <TableCell><Skeleton className="h-6 w-24" /></TableCell>
+                    <TableCell><Skeleton className="h-6 w-16" /></TableCell>
+                    <TableCell className="text-right"><Skeleton className="h-8 w-8 inline-block" /></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><Skeleton className="h-6 w-24" /></TableCell>
+                    <TableCell><Skeleton className="h-6 w-16" /></TableCell>
+                    <TableCell className="text-right"><Skeleton className="h-8 w-8 inline-block" /></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell><Skeleton className="h-6 w-24" /></TableCell>
+                    <TableCell><Skeleton className="h-6 w-16" /></TableCell>
+                    <TableCell className="text-right"><Skeleton className="h-8 w-8 inline-block" /></TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             </div>
           ) : state.type === "success" && state.product ? (
             <div className="space-y-4">
@@ -163,13 +184,15 @@ export function VisualSearchClient() {
                     <TableHeader>
                         <TableRow>
                         <TableHead>Platform</TableHead>
-                        <TableHead className="text-right">Search Link</TableHead>
+                        <TableHead>Price</TableHead>
+                        <TableHead className="text-right">Link</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
                         {state.product.purchasingOptions?.map((option: any, index: number) => (
                             <TableRow key={index}>
                                 <TableCell className="font-medium">{option.platform}</TableCell>
+                                <TableCell>{option.price}</TableCell>
                                 <TableCell className="text-right">
                                 <a href={option.link} target="_blank" rel="noopener noreferrer">
                                     <Button variant="ghost" size="icon">

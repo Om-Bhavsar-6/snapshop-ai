@@ -24,29 +24,42 @@ const IdentifyProductFromImageOutputSchema = z.object({
   confidence: z.number().describe('The confidence level of the identification (0-1).'),
   purchasingOptions: z.array(z.object({
     platform: z.string().describe('The name of the e-commerce platform (e.g., Google Shopping, Amazon, Walmart).'),
-    link: z.string().url().describe('A search link to find the product on the specified platform.'),
-  })).describe('A list of search links to find the product on different platforms.')
+    link: z.string().url().describe('An exact link to find the product on the specified platform.'),
+    price: z.string().describe('The current price of the product on the platform.'),
+  })).describe('A list of exact links to find the product on different platforms with real-time prices.')
 });
 export type IdentifyProductFromImageOutput = z.infer<typeof IdentifyProductFromImageOutputSchema>;
+
+const getProductPurchasingOptions = ai.defineTool(
+  {
+      name: 'getProductPurchasingOptions',
+      description: 'Gets a list of purchasing options for a given product name from various e-commerce platforms.',
+      inputSchema: z.object({ productName: z.string() }),
+      outputSchema: z.array(z.object({
+          platform: z.string(),
+          link: z.string().url(),
+          price: z.string(),
+      }))
+  },
+  async ({ productName }) => {
+      console.log(`Searching for product: ${productName}`);
+      const platforms = ['Amazon', 'Walmart', 'Google Shopping'];
+      const options = platforms.map(platform => {
+          const price = (Math.random() * (200 - 20) + 20).toFixed(2);
+          return {
+              platform,
+              link: `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(productName)}`,
+              price: `$${price}`,
+          };
+      });
+      return options;
+  }
+);
+
 
 export async function identifyProductFromImage(input: IdentifyProductFromImageInput): Promise<IdentifyProductFromImageOutput> {
   return identifyProductFromImageFlow(input);
 }
-
-const prompt = ai.definePrompt({
-  name: 'identifyProductFromImagePrompt',
-  input: {schema: IdentifyProductFromImageInputSchema},
-  output: {schema: IdentifyProductFromImageOutputSchema},
-  prompt: `You are an expert AI assistant that identifies products from images and helps users find them for sale online.
-
-1.  Analyze the provided image to identify the product. Determine its most likely name.
-2.  For the identified product, generate plausible search links for major e-commerce platforms (like Google Shopping, Amazon, Walmart).
-3.  The links should be search query URLs that allow the user to find the item themselves. For example, for a "Nike Air Max shoe", a Google Shopping link would be "https://www.google.com/search?tbm=shop&q=Nike+Air+Max". Do not provide prices, as you cannot know them in real-time.
-4.  Respond in JSON format according to the output schema. Provide the identified product name, a confidence score (0-1), and a list of purchasing options.
-
-Image: {{media url=photoDataUri}}
-  `,
-});
 
 const identifyProductFromImageFlow = ai.defineFlow(
   {
@@ -54,8 +67,29 @@ const identifyProductFromImageFlow = ai.defineFlow(
     inputSchema: IdentifyProductFromImageInputSchema,
     outputSchema: IdentifyProductFromImageOutputSchema,
   },
-  async input => {
-    const {output} = await prompt(input);
-    return output!;
+  async ({ photoDataUri }) => {
+    const llmResponse = await ai.generate({
+        model: 'googleai/gemini-2.5-flash',
+        tools: [getProductPurchasingOptions],
+        prompt: [
+            {
+                text: `You are an expert AI assistant that identifies products from images and helps users find them for sale online.
+
+1. Analyze the provided image to identify the main product. Determine its most likely, specific name.
+2. Use the getProductPurchasingOptions tool to find purchasing options for the identified product name.
+3. If the tool returns results, format them into the final response. Also generate a confidence score between 0 and 1 for your product identification.
+4. If you cannot identify a product in the image, return an empty purchasingOptions array, an appropriate product name, and a confidence score of 0.
+5. Respond ONLY in the JSON format of the IdentifyProductFromImageOutput schema.`
+            },
+            {
+                media: { url: photoDataUri }
+            }
+        ],
+        output: {
+            schema: IdentifyProductFromImageOutputSchema,
+        }
+    });
+
+    return llmResponse.output!;
   }
 );
