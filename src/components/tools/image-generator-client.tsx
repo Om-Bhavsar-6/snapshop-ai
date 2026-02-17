@@ -9,12 +9,13 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Loader2, ImageIcon as ImageIconLucide } from "lucide-react";
-import { Skeleton } from "../ui/skeleton";
+import { Loader2, ImageIcon as ImageIconLucide, Link as LinkIcon, Star } from "lucide-react";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 const initialState = {
   type: null,
   imageUrl: null,
+  product: null,
   errors: null,
 };
 
@@ -30,7 +31,7 @@ function SubmitButton() {
       ) : (
         <>
           <ImageIconLucide className="mr-2 h-4 w-4" />
-          Generate Image
+          Generate & Find
         </>
       )}
     </Button>
@@ -61,17 +62,17 @@ export function ImageGeneratorClient() {
   }, [state, toast]);
 
   return (
-    <div className="grid gap-8 md:grid-cols-2">
+    <div className="space-y-8">
       <form action={formAction}>
         <Card>
           <CardHeader>
             <CardTitle>Product Image Generator</CardTitle>
-            <CardDescription>Enter a product name to generate an illustrative image for your shopping list.</CardDescription>
+            <CardDescription>Enter a product name to generate an illustrative image and find it for sale online.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="productName">Product Name</Label>
-              <Input id="productName" name="productName" placeholder="e.g., 'Organic Apples'" required />
+              <Input id="productName" name="productName" placeholder="e.g., 'Red Wireless Headphones'" required />
               {state.errors?.productName && <p className="text-sm text-destructive">{state.errors.productName[0]}</p>}
             </div>
           </CardContent>
@@ -81,27 +82,82 @@ export function ImageGeneratorClient() {
         </Card>
       </form>
       
-      <Card>
-        <CardHeader>
-          <CardTitle>Generated Image</CardTitle>
-          <CardDescription>Your AI-generated product image will appear here.</CardDescription>
-        </CardHeader>
-        <CardContent className="flex items-center justify-center">
-            {state.type === "success" && state.imageUrl ? (
-                <Image
-                    src={state.imageUrl}
-                    alt="Generated product image"
-                    width={512}
-                    height={512}
-                    className="rounded-lg object-cover aspect-square"
-                />
-            ) : (
-                <div className="flex items-center justify-center w-full aspect-square text-muted-foreground border-2 border-dashed rounded-lg">
-                    <p>Image will be generated here.</p>
+      {state.type === "success" && (state.imageUrl || state.product) && (
+        <Card>
+            <CardHeader>
+                <CardTitle>Generated Results</CardTitle>
+                <CardDescription>Here's your generated image and the best web matches we found.</CardDescription>
+            </CardHeader>
+            <CardContent className="grid gap-8 md:grid-cols-2">
+                <div className="flex items-center justify-center">
+                    {state.imageUrl ? (
+                        <Image
+                            src={state.imageUrl}
+                            alt="Generated product image"
+                            width={512}
+                            height={512}
+                            className="rounded-lg object-cover aspect-square"
+                        />
+                    ) : (
+                        <div className="flex items-center justify-center w-full aspect-square text-muted-foreground border-2 border-dashed rounded-lg">
+                            <p>Image could not be generated.</p>
+                        </div>
+                    )}
                 </div>
-            )}
-        </CardContent>
-      </Card>
+
+                <div className="space-y-4">
+                    {state.product && state.product.productName ? (
+                        <>
+                            <div>
+                                <h4 className="text-2xl font-bold text-primary">{state.product.productName}</h4>
+                                {state.product.confidence > 0 && (
+                                    <div className="flex items-center gap-2 text-muted-foreground mt-1">
+                                        <Star className="h-5 w-5 text-yellow-500 fill-yellow-400" />
+                                        <span className="font-semibold">
+                                        Confidence: {Math.round(state.product.confidence * 100)}%
+                                        </span>
+                                    </div>
+                                )}
+                            </div>
+                            {state.product.purchasingOptions && state.product.purchasingOptions.length > 0 ? (
+                                <Table>
+                                    <TableHeader>
+                                        <TableRow>
+                                        <TableHead>Platform</TableHead>
+                                        <TableHead>Price</TableHead>
+                                        <TableHead className="text-right">Link</TableHead>
+                                        </TableRow>
+                                    </TableHeader>
+                                    <TableBody>
+                                        {state.product.purchasingOptions.map((option: any, index: number) => (
+                                            <TableRow key={index}>
+                                                <TableCell className="font-medium">{option.platform}</TableCell>
+                                                <TableCell>{option.price}</TableCell>
+                                                <TableCell className="text-right">
+                                                <a href={option.link} target="_blank" rel="noopener noreferrer" title={`Find on ${option.platform}`}>
+                                                    <Button variant="ghost" size="icon">
+                                                      <LinkIcon className="h-4 w-4" />
+                                                      <span className="sr-only">Product Link</span>
+                                                    </Button>
+                                                </a>
+                                                </TableCell>
+                                            </TableRow>
+                                        ))}
+                                    </TableBody>
+                                </Table>
+                            ) : (
+                                <p className="text-muted-foreground text-sm pt-4">No purchasing options found for the generated image.</p>
+                            )}
+                        </>
+                    ) : (
+                        <div className="flex items-center justify-center h-full text-muted-foreground border-2 border-dashed rounded-lg p-8">
+                            <p>Could not identify a matching product online.</p>
+                        </div>
+                    )}
+                </div>
+            </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

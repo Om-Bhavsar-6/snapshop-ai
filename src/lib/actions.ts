@@ -89,15 +89,16 @@ export async function generateImageAction(prevState: any, formData: FormData) {
             type: "error" as const,
             errors: validatedFields.error.flatten().fieldErrors,
             imageUrl: null,
+            product: null,
         };
     }
 
     try {
-        const { imageUrl } = await generateProductImage(validatedFields.data);
+        const result = await generateProductImage(validatedFields.data);
         revalidatePath("/tools/image-generator");
-        return { type: "success" as const, imageUrl, errors: null, query: validatedFields.data.productName };
+        return { type: "success" as const, ...result, errors: null, query: validatedFields.data.productName };
     } catch (e) {
-        return { type: "error" as const, errors: handleActionError(e), imageUrl: null };
+        return { type: "error" as const, errors: handleActionError(e), imageUrl: null, product: null };
     }
 }
 
