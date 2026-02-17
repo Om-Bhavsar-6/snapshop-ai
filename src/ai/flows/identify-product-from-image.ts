@@ -23,17 +23,17 @@ const IdentifyProductFromImageOutputSchema = z.object({
   productName: z.string().describe('The name of the identified product.'),
   confidence: z.number().describe('The confidence level of the identification (0-1).'),
   purchasingOptions: z.array(z.object({
-    platform: z.string().describe('The name of the e-commerce platform (e.g., Google Shopping, Amazon, Walmart).'),
+    platform: z.string().describe('The name of the e-commerce platform (e.g., Amazon.in, Flipkart).'),
     link: z.string().url().describe('An exact link to find the product on the specified platform.'),
-    price: z.string().describe('The current price of the product on the platform.'),
-  })).describe('A list of exact links to find the product on different platforms with real-time prices.')
+    price: z.string().describe('The current price of the product on the platform in INR (₹).'),
+  })).describe('A list of exact links to find the product on different Indian platforms with real-time prices.')
 });
 export type IdentifyProductFromImageOutput = z.infer<typeof IdentifyProductFromImageOutputSchema>;
 
 const getProductPurchasingOptions = ai.defineTool(
   {
       name: 'getProductPurchasingOptions',
-      description: 'Gets a list of purchasing options for a given product name from various e-commerce platforms.',
+      description: 'Gets a list of purchasing options for a given product name from various Indian e-commerce platforms like Amazon.in and Flipkart.',
       inputSchema: z.object({ productName: z.string() }),
       outputSchema: z.array(z.object({
           platform: z.string(),
@@ -42,14 +42,18 @@ const getProductPurchasingOptions = ai.defineTool(
       }))
   },
   async ({ productName }) => {
-      console.log(`Searching for product: ${productName}`);
-      const platforms = ['Amazon', 'Walmart', 'Google Shopping'];
+      console.log(`Searching for product in Indian market: ${productName}`);
+      const platforms = [
+        { name: 'Amazon.in', url: `https://www.amazon.in/s?k=${encodeURIComponent(productName)}` },
+        { name: 'Flipkart', url: `https://www.flipkart.com/search?q=${encodeURIComponent(productName)}` },
+        { name: 'Google Shopping (IN)', url: `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(productName)}&gl=in` }
+      ];
       const options = platforms.map(platform => {
-          const price = (Math.random() * (200 - 20) + 20).toFixed(2);
+          const price = (Math.random() * (10000 - 500) + 500).toFixed(2);
           return {
-              platform,
-              link: `https://www.google.com/search?tbm=shop&q=${encodeURIComponent(productName)}`,
-              price: `$${price}`,
+              platform: platform.name,
+              link: platform.url,
+              price: `₹${price}`,
           };
       });
       return options;
@@ -73,7 +77,7 @@ const identifyProductFromImageFlow = ai.defineFlow(
         tools: [getProductPurchasingOptions],
         prompt: [
             {
-                text: `You are an expert AI assistant that identifies products from images and helps users find them for sale online.
+                text: `You are an expert AI assistant that identifies products from images and helps users find them for sale online. The user is in India, so all links and prices should be for the Indian market (e.g., Amazon.in, Flipkart) and in Indian Rupees (INR).
 
 1. Analyze the provided image to identify the main product. Determine its most likely, specific name.
 2. Use the getProductPurchasingOptions tool to find purchasing options for the identified product name.
