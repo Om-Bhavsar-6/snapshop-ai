@@ -59,7 +59,9 @@ export function AppSidebar() {
   return (
     <Sidebar>
       <SidebarHeader>
-        <Logo />
+        <Link href="/dashboard">
+          <Logo />
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
