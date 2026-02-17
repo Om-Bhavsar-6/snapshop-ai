@@ -7,6 +7,15 @@ import { generateProductImage } from "@/ai/flows/generate-product-image";
 import { identifyProductFromImage } from "@/ai/flows/identify-product-from-image";
 import { revalidatePath } from "next/cache";
 
+function handleActionError(e: unknown) {
+    const error = e instanceof Error ? e.message : "An unknown error occurred.";
+    if (error.toLowerCase().includes("api key") || error.includes("network error")) {
+        return { _server: ["AI service connection failed. Please ensure your GEMINI_API_KEY is set correctly." ]};
+    }
+    return { _server: [error] };
+}
+
+
 // Generate Shopping List Action
 const shoppingListSchema = z.object({
   description: z.string().min(10, "Please provide a more detailed description."),
@@ -32,8 +41,7 @@ export async function createShoppingListAction(prevState: any, formData: FormDat
     revalidatePath("/dashboard");
     return { type: "success" as const, shoppingList, errors: null, query: validatedFields.data.description };
   } catch (e) {
-    const error = e instanceof Error ? e.message : "An unknown error occurred.";
-    return { type: "error" as const, errors: { _server: [error] }, shoppingList: null };
+    return { type: "error" as const, errors: handleActionError(e), shoppingList: null };
   }
 }
 
@@ -62,8 +70,7 @@ export async function polishReviewAction(prevState: any, formData: FormData) {
         revalidatePath("/tools/review-summarizer");
         return { type: "success" as const, polishedReview, errors: null, query: validatedFields.data };
     } catch (e) {
-        const error = e instanceof Error ? e.message : "An unknown error occurred.";
-        return { type: "error" as const, errors: { _server: [error] }, polishedReview: null };
+        return { type: "error" as const, errors: handleActionError(e), polishedReview: null };
     }
 }
 
@@ -90,8 +97,7 @@ export async function generateImageAction(prevState: any, formData: FormData) {
         revalidatePath("/tools/image-generator");
         return { type: "success" as const, imageUrl, errors: null, query: validatedFields.data.productName };
     } catch (e) {
-        const error = e instanceof Error ? e.message : "An unknown error occurred.";
-        return { type: "error" as const, errors: { _server: [error] }, imageUrl: null };
+        return { type: "error" as const, errors: handleActionError(e), imageUrl: null };
     }
 }
 
@@ -118,7 +124,6 @@ export async function identifyProductAction(prevState: any, formData: FormData) 
         revalidatePath("/visual-search");
         return { type: "success" as const, product, errors: null, query: validatedFields.data.photoDataUri };
     } catch (e) {
-        const error = e instanceof Error ? e.message : "An unknown error occurred.";
-        return { type: "error" as const, errors: { _server: [error] }, product: null };
+        return { type: "error" as const, errors: handleActionError(e), product: null };
     }
 }
