@@ -12,11 +12,7 @@ const coFounders = [
     linkedin: "https://www.linkedin.com/in/om-bhavsar-88899025b/",
     image: { imageUrl: "/om.jpg" },
   },
-  {
-    name: "Dipti Chaturvedi",
-    linkedin: "https://www.linkedin.com/in/dipti-chaturvedi-b14a82313/",
-    image: { imageUrl: "/dipti.jpg" },
-  },
+  
   {
     name: "Rohan Shinde",
     linkedin: "https://www.linkedin.com/in/rohan-shinde-b3092537b/",
