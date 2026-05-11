@@ -27,8 +27,8 @@ SnapShop AI is an intelligent web application that transforms your shopping proc
 
 
 
-<img width="956" height="912" alt="Screenshot 2025-09-16 132816" src="https://github.com/user-attachments/assets/f1565766-15cb-4710-88ca-ee2bec30bfca" />
-<img width="954" height="916" alt="Screenshot 2025-09-16 132823" src="https://github.com/user-attachments/assets/9431611b-215f-4d6b-b0db-e9369e1c89da" />
+<img width="1919" height="919" alt="Screenshot 2025-11-17 201003" src="https://github.com/user-attachments/assets/404f6458-25a7-45c3-9235-37c8b71b5ad7" />
+<img width="1920" height="1080" alt="Screenshot (43)" src="https://github.com/user-attachments/assets/72e782b6-6a69-4d24-8c30-b1f28126d7f1" />
 
 
 
